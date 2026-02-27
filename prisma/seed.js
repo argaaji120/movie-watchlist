@@ -6,7 +6,7 @@ const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL }, { s
 
 const prisma = new PrismaClient({ adapter: adapter }, { log: process.env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"] });
 
-const userId = "65db6595-f75c-4125-9a28-3b357826901c";
+const userId = "95aa7f75-f8c9-4ffa-aa3f-17f75c8c8eb5";
 
 const movies = [
     {

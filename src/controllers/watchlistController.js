@@ -1,5 +1,61 @@
 import { prisma } from "../config/db.js";
 
+/**
+ * Get watchlist items for the authenticated user
+ * Requires protect middleware
+ * Optional query params for filtering by status (PLANNED, WATCHING, COMPLETED, DROPPED) and sorting by createdAt or rating
+ */
+const getWatchlist = async (req, res) => {
+    const { status, sortBy } = req.validatedQuery;
+
+    const hasWatchlistItems = await prisma.watchlistItem.findFirst({
+        where: { userId: req.user.id },
+    });
+
+    if (!hasWatchlistItems) {
+        return res.status(404).json({ error: "No watchlist items found for this user" });
+    }
+
+    const where = { userId: req.user.id };
+
+    if (status) {
+        where.status = status.toUpperCase();
+    }
+
+    const orderBy = {};
+
+    if (sortBy === "createdAt") {
+        orderBy.createdAt = "desc";
+    } else if (sortBy === "rating") {
+        orderBy.rating = "desc";
+    }
+
+    const watchlistItems = await prisma.watchlistItem.findMany({
+        where,
+        orderBy,
+        include: {
+            movie: {
+                select: {
+                    id: true,
+                    title: true,
+                    releaseYear: true,
+                    posterUrl: true,
+                },
+            },
+        },
+    });
+
+    res.status(200).json({
+        status: "success",
+        data: { watchlistItems },
+    });
+};
+
+/**
+ * Add movie to watchlist
+ * Validate movie exists
+ * Requires protect middleware
+ */
 const addToWatchlist = async (req, res) => {
     const { movieId, status, rating, notes } = req.body;
 
@@ -12,16 +68,23 @@ const addToWatchlist = async (req, res) => {
         return res.status(404).json({ error: "Movie not found" });
     }
 
+    // const existingInWatchlist = await prisma.watchlistItem.findUnique({
+    //     where: {
+    //         userId_movieId: {
+    //             userId: req.user.id,
+    //             movieId: movieId,
+    //         },
+    //     },
+    // });
+
     const existingInWatchlist = await prisma.watchlistItem.findFirst({
         where: {
-            userId_movieId: {
-                userId: req.user.id,
-                movieId: movieId,
-            },
+            userId: req.user.id,
+            movieId: movieId,
         },
     });
 
-    if (!existingInWatchlist) {
+    if (existingInWatchlist) {
         return res.status(400).json({ error: "Movie already in watchlist" });
     }
 
@@ -47,11 +110,11 @@ const addToWatchlist = async (req, res) => {
  * Requires protect middleware
  */
 const updateWatchlistItem = async (req, res) => {
-    const { status, rating, notes } = res.body;
+    const { status, rating, notes } = req.body;
 
     // Find watchlist item
     const watchlistItem = await prisma.watchlistItem.findUnique({
-        where: { id: params.id },
+        where: { id: req.params.id },
     });
 
     if (!watchlistItem) {
@@ -112,4 +175,4 @@ const removeFromWatchlist = async (req, res) => {
     });
 };
 
-export { addToWatchlist, updateWatchlistItem, removeFromWatchlist };
+export { getWatchlist, addToWatchlist, updateWatchlistItem, removeFromWatchlist };

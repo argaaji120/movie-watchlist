@@ -1,5 +1,22 @@
 import { z } from "zod";
 
+const getWatchlistSchema = z.object({
+    status: z
+        .enum(["PLANNED", "WATCHING", "COMPLETED", "DROPPED"], {
+            error: () => ({
+                message: "Status must me one of: PLANNED, WATCHING, COMPLETED, DROPPED",
+            }),
+        })
+        .optional(),
+    sortBy: z
+        .enum(["createdAt", "rating"], {
+            error: () => ({
+                message: "Sort must me one of: createdAt, rating",
+            }),
+        })
+        .optional(),
+});
+
 // movieId, status, rating, notes
 const addToWatchlistSchema = z.object({
     movieId: z.uuid(),
@@ -8,7 +25,7 @@ const addToWatchlistSchema = z.object({
             message: "Status must me one of: PLANNED, WATCHING, COMPLETED, DROPPED",
         }),
     }),
-    rating: z.coerce.number().int("Rating must be an integer").min(1, "Rating must between 1 and 10").min(10, "Rating must between 1 and 10").optional(),
+    rating: z.coerce.number().int("Rating must be an integer").min(1, "Rating must between 1 and 10").max(10, "Rating must between 1 and 10").optional(),
     notes: z.string().optional(),
 });
 
@@ -23,4 +40,4 @@ const updateWatchlistItemSchema = z.object({
     notes: z.string().optional(),
 });
 
-export { addToWatchlistSchema, updateWatchlistItemSchema };
+export { getWatchlistSchema, addToWatchlistSchema, updateWatchlistItemSchema };
