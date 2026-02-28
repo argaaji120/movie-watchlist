@@ -21,9 +21,9 @@ app.use("/movies", movieRoutes);
 app.use("/watchlist", watchlistRoutes);
 
 // Start the server
-const PORT = 3000;
+const PORT = process.env.PORT;
 const server = app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+    console.log(`Server is running on http://localhost:${PORT}`);
 });
 
 // Handle unhandled promise rejections (e.g., database connection errors)

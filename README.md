@@ -25,29 +25,27 @@ A Node.js Express backend API for managing movies and personal watchlists. Users
 
 ```
 src/
-├── server.js                 # Main application entry point
+├── server.js                           # Main application entry point
 ├── config/
-│   └── db.js               # Database configuration
+│   └── db.js                           # Database configuration
 ├── controllers/
-│   ├── authController.js   # Authentication logic
-│   ├── movieController.js  # Movie management logic
-│   └── watchlistController.js # Watchlist management logic
+│   ├── authController.js               # Authentication logic
+│   ├── movieController.js              # Movie management logic
+│   └── watchlistController.js          # Watchlist management logic
 ├── middleware/
-│   ├── authMiddleware.js   # JWT verification
-│   └── validateRequestMiddleware.js # Request validation
+│   ├── authMiddleware.js               # JWT verification
+│   ├── validateQueryMiddleware.js      # Query parameter validation
+│   └── validateRequestMiddleware.js    # Request body validation
 ├── routes/
-│   ├── authRoutes.js       # Auth endpoints
-│   ├── movieRoutes.js      # Movie endpoints
-│   └── watchlistRoutes.js  # Watchlist endpoints
+│   ├── authRoutes.js                   # Auth endpoints
+│   ├── movieRoutes.js                  # Movie endpoints
+│   └── watchlistRoutes.js              # Watchlist endpoints
 ├── utils/
-│   └── generateToken.js    # JWT token generation
+│   └── generateToken.js                # JWT token generation
 └── validators/
-    └── watchlistValidator.js # Watchlist validation
-
-prisma/
-├── schema.prisma           # Database schema
-├── seed.js                 # Database seeding script
-└── migrations/             # Migration history
+    ├── authValidator.js                # Auth request validation
+    ├── movieValidator.js               # Movie request validation
+    └── watchlistValidator.js           # Watchlist request validation
 ```
 
 ## Prerequisites
