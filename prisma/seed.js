@@ -55,6 +55,33 @@ const movies = [
         posterUrl: "https://picsum.photos/200/300",
         createdBy: userId,
     },
+    {
+        title: "The Lord of the Rings: The Fellowship of the Ring",
+        overview: "A meek Hobbit from the Shire and eight companions set out on a journey to destroy the powerful One Ring and save Middle-earth from the Dark Lord Sauron.",
+        releaseYear: 2001,
+        genres: ["Adventure", "Drama", "Fantasy"],
+        runtime: 178,
+        posterUrl: "https://picsum.photos/200/300",
+        createdBy: userId,
+    },
+    {
+        title: "The Shawshank Redemption",
+        overview: "Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.",
+        releaseYear: 1994,
+        genres: ["Drama"],
+        runtime: 142,
+        posterUrl: "https://picsum.photos/200/300",
+        createdBy: userId,
+    },
+    {
+        title: "The Godfather",
+        overview: "The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.",
+        releaseYear: 1972,
+        genres: ["Crime", "Drama"],
+        runtime: 175,
+        posterUrl: "https://picsum.photos/200/300",
+        createdBy: userId,
+    },
 ];
 
 const main = async () => {
