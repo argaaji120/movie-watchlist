@@ -7,6 +7,10 @@ import authRoutes from "./routes/authRoutes.js";
 import movieRoutes from "./routes/movieRoutes.js";
 import watchlistRoutes from "./routes/watchlistRoutes.js";
 
+// Swagger API Documentation
+import { swaggerSpec } from "./swagger/config.js";
+import swaggerUi from "swagger-ui-express";
+
 config(); // Load environment variables from .env file
 connectDB(); // Connect to the database
 
@@ -14,6 +18,9 @@ const app = express();
 
 app.use(express.json()); // Middleware to parse JSON bodies
 app.use(express.urlencoded({ extended: true })); // Middleware to parse URL-encoded bodies
+
+// Swagger API Documentation
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // API Routes
 app.use("/auth", authRoutes);
